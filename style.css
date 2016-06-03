@@ -1,4 +1,9 @@
+body{
+  text-align: center;
+}
 canvas{
   border: 1px solid black;
-  background-color: #889966
+  background-color: #889966;
+  display: block;
+  margin: auto;
 }

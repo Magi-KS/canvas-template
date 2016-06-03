@@ -1,17 +1,18 @@
 // setups
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
+var points_element = document.getElementById('points');
 // constants
-var LEFT = 37
-var UP = 38
-var RIGHT = 39
-var DOWN = 40
+var LEFT = 37;
+var UP = 38;
+var RIGHT = 39;
+var DOWN = 40;
 // game variables
 var dot_size = 10;
-var initial_pos = {x:5, y:5}
-var map_size = {x: canvas.width/dot_size, y: canvas.height/dot_size}
+var initial_pos = {x:5, y:5};
+var map_size = {x: canvas.width/dot_size, y: canvas.height/dot_size};
 // game state variables
-var food = randomPos()
+var food = randomPos();
 var snake_direction = RIGHT;
 var snake = [
   {x:initial_pos.x, y:initial_pos.y},
@@ -20,9 +21,9 @@ var snake = [
   {x:initial_pos.x, y:initial_pos.y},
   {x:initial_pos.x, y:initial_pos.y}
 ];
+var food_eaten = 0;
+var dead = false;
 context.fillStyle = '#223311';
-context.fillRect(0, 0, 50, 50);
-context.clearRect(0, 0, 300, 300);
 
 document.addEventListener('keydown',function(e){
   console.log(e.keyIdentifier, e.keyCode)
@@ -42,7 +43,7 @@ function randomPos(){
 
 }
 
-function sMoveUpdate(){
+function snakeUpdate(){
   var new_head = {
     x: snake[0].x,
     y: snake[0].y
@@ -87,15 +88,17 @@ function foodUpdate(){
       x: snake[snake.length-1].x,
       y: snake[snake.length-1].y
     });
+    ++food_eaten;
     food = randomPos();
   }
+  points_element.textContent = food_eaten;
 }
 
 var last_loop = 0;
 function gameLoop(time){
   if((time - last_loop) >= 16.666666667*4){
     last_loop = time
-    sMoveUpdate();
+    snakeUpdate();
     foodUpdate();
     draw();
   }
